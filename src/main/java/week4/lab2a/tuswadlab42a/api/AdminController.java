@@ -51,6 +51,7 @@ public class AdminController {
 
     @PostMapping("/restaurants")
     public Restaurant createRestaurant(@RequestBody Restaurant restaurant) {
+        System.out.println(restaurant.toString());
         return restaurantService.createRestaurant(restaurant);
     }
 

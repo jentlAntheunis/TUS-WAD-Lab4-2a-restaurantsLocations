@@ -25,4 +25,14 @@ public class Restaurant {
     @JoinColumn(name = "location_id")
     @JsonBackReference
     private Location location;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id: " + getId() + ", " +
+                "name: " + getName() + ", " +
+                "phone: " + getPhone() + ", " +
+                "location: " + getLocation() + ", " +
+                "}";
+    }
 }
