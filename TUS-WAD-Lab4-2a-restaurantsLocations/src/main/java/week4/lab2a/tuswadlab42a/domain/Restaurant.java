@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import week4.lab2a.tuswadlab42a.repository.LocationRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="restaurant")
 @Getter
@@ -15,24 +18,13 @@ import week4.lab2a.tuswadlab42a.repository.LocationRepository;
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
 
     private String phone;
 
-    @ManyToOne
-    @JoinColumn(name = "location_id")
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     @JsonBackReference
-    private Location location;
-
-    @Override
-    public String toString() {
-        return "{" +
-                "id: " + getId() + ", " +
-                "name: " + getName() + ", " +
-                "phone: " + getPhone() + ", " +
-                "location: " + getLocation() + ", " +
-                "}";
-    }
+    private List<Location> locations = new ArrayList<>();
 }

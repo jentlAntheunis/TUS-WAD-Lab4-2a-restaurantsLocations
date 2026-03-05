@@ -21,8 +21,12 @@ public class AdminController {
 
     // Locations
     @GetMapping("/locations")
-    public List<Location> getLocations() {
-        return locationService.getAllLocations();
+    public List<Location> getLocationsByRestaurantId(@RequestParam Long restaurantId) {
+        if(restaurantId == 0) {
+            return locationService.getAllLocations();
+        } else {
+            return locationService.getLocationsByRestaurantId(restaurantId);
+        }
     }
 
     @GetMapping("/locations/{id}")
@@ -42,12 +46,12 @@ public class AdminController {
 
     // Restaurants
     @GetMapping("/restaurants")
-    public List<Restaurant> getRestaurantsByLocation(@RequestParam long locationId) {
-        if(locationId != 0){
-            return restaurantService.findByLocationId(locationId);
-        }
+    public List<Restaurant> getRestaurants() {
         return restaurantService.findAll();
     }
+
+    @GetMapping("/restaurants/{id}")
+    public Restaurant getRestaurantById(@PathVariable Long id) { return restaurantService.findById(id); }
 
     @PostMapping("/restaurants")
     public Restaurant createRestaurant(@RequestBody Restaurant restaurant) {

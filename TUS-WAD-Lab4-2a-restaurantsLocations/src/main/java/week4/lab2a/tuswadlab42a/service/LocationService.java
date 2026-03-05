@@ -11,32 +11,30 @@ import java.util.List;
 @Service
 public class LocationService {
     private final LocationRepository locationRepository;
-    private final RestaurantRepository restaurantRepository;
-    public LocationService(LocationRepository locationRepository,  RestaurantRepository restaurantRepository) {
+    public LocationService(LocationRepository locationRepository) {
         this.locationRepository = locationRepository;
-        this.restaurantRepository = restaurantRepository;
     }
 
     public List<Location> getAllLocations() {
         return locationRepository.findAll();
     }
+    public List<Location> getLocationsByRestaurantId(Long restaurantId) {
+        return locationRepository.findByRestaurantId(restaurantId);
+    }
 
     public Location getLocationById(Long locationId) {
+
         return locationRepository.getReferenceById(locationId);
     }
 
     public Location createLocation(Location location) {
+
         return locationRepository.save(location);
     }
 
     public String deleteLocation(Long id) {
         Location location = locationRepository.getReferenceById(id);
-        // check if no restaurants in location
-        List<Restaurant> restaurants = restaurantRepository.findByLocationLocationId(id);
-        if (restaurants.isEmpty()) {
-            locationRepository.delete(location);
-            return "Location deleted";
-        }
-        return "Location not deleted, restaurants inside";
+        locationRepository.delete(location);
+        return "Location deleted";
     }
 }

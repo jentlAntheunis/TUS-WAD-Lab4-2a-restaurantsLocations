@@ -17,11 +17,12 @@ import java.util.List;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long locationId;
+    private Long id;
 
     private String city;
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
     @JsonBackReference
-    private List<Restaurant> restaurants = new ArrayList<>();
+    private Restaurant restaurant;
 }
