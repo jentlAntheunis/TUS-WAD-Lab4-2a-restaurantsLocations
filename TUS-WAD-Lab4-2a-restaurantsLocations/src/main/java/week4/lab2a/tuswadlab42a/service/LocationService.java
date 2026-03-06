@@ -3,6 +3,7 @@ package week4.lab2a.tuswadlab42a.service;
 import org.springframework.stereotype.Service;
 import week4.lab2a.tuswadlab42a.domain.Location;
 import week4.lab2a.tuswadlab42a.domain.Restaurant;
+import week4.lab2a.tuswadlab42a.dto.UpdateLocationRequest;
 import week4.lab2a.tuswadlab42a.repository.LocationRepository;
 import week4.lab2a.tuswadlab42a.repository.RestaurantRepository;
 
@@ -11,8 +12,11 @@ import java.util.List;
 @Service
 public class LocationService {
     private final LocationRepository locationRepository;
-    public LocationService(LocationRepository locationRepository) {
+    private final RestaurantRepository restaurantRepository;
+
+    public LocationService(LocationRepository locationRepository, RestaurantRepository restaurantRepository) {
         this.locationRepository = locationRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     public List<Location> getAllLocations() {
@@ -29,6 +33,19 @@ public class LocationService {
 
     public Location createLocation(Location location) {
 
+        return locationRepository.save(location);
+    }
+
+    public Location updateLocation(Long locationId, UpdateLocationRequest req) {
+        Location location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new RuntimeException("Location not found")); // ensure location exists
+        Restaurant restaurant = restaurantRepository.findById(req.getRestaurantId())
+                .orElseThrow(() -> new RuntimeException("Restaurant not found")); // enforce "update by restaurant" (location must belong to that restaurant)
+
+        if (!location.getRestaurant().getId().equals(restaurant.getId())) {
+            throw new RuntimeException("Location does not belong to the given location"); } // update fields (only if provided) if (req.getName() != null)
+
+        if(req.getCity() != null) location.setCity(req.getCity());
         return locationRepository.save(location);
     }
 

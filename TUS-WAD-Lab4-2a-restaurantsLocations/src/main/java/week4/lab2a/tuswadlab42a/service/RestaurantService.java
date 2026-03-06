@@ -3,6 +3,7 @@ package week4.lab2a.tuswadlab42a.service;
 import org.springframework.stereotype.Service;
 import week4.lab2a.tuswadlab42a.domain.Location;
 import week4.lab2a.tuswadlab42a.domain.Restaurant;
+import week4.lab2a.tuswadlab42a.dto.UpdateRestaurantRequest;
 import week4.lab2a.tuswadlab42a.repository.LocationRepository;
 import week4.lab2a.tuswadlab42a.repository.RestaurantRepository;
 
@@ -29,7 +30,12 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
-    public Restaurant updateRestaurant(Restaurant restaurant) {
+    public Restaurant updateRestaurant(Long restaurantId, UpdateRestaurantRequest req) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found")); // ensure location exists
+
+        if (req.getName() != null) restaurant.setName(req.getName());
+        if (req.getPhone() != null) restaurant.setPhone(req.getPhone());
 
         return restaurantRepository.save(restaurant);
     }
