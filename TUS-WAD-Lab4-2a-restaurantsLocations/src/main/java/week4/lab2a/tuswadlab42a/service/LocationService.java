@@ -3,7 +3,7 @@ package week4.lab2a.tuswadlab42a.service;
 import org.springframework.stereotype.Service;
 import week4.lab2a.tuswadlab42a.domain.Location;
 import week4.lab2a.tuswadlab42a.domain.Restaurant;
-import week4.lab2a.tuswadlab42a.dto.UpdateLocationRequest;
+import week4.lab2a.tuswadlab42a.dto.LocationDTO;
 import week4.lab2a.tuswadlab42a.repository.LocationRepository;
 import week4.lab2a.tuswadlab42a.repository.RestaurantRepository;
 
@@ -31,12 +31,16 @@ public class LocationService {
         return locationRepository.getReferenceById(locationId);
     }
 
-    public Location createLocation(Location location) {
-
-        return locationRepository.save(location);
+    public Location createLocation(LocationDTO req) {
+        Location newLocation = new Location();
+        if(req.getCity() != null) newLocation.setCity(req.getCity());
+        if(req.getRestaurantId() != null && restaurantRepository.findById(req.getRestaurantId()).isPresent()) {
+            newLocation.setRestaurant(restaurantRepository.findById(req.getRestaurantId()).get());
+        }
+        return locationRepository.save(newLocation);
     }
 
-    public Location updateLocation(Long locationId, UpdateLocationRequest req) {
+    public Location updateLocation(Long locationId, LocationDTO req) {
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new RuntimeException("Location not found")); // ensure location exists
         Restaurant restaurant = restaurantRepository.findById(req.getRestaurantId())

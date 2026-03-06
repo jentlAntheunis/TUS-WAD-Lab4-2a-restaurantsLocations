@@ -4,9 +4,10 @@ import org.springframework.web.bind.annotation.*;
 import week4.lab2a.tuswadlab42a.domain.Category;
 import week4.lab2a.tuswadlab42a.domain.Location;
 import week4.lab2a.tuswadlab42a.domain.Restaurant;
-import week4.lab2a.tuswadlab42a.dto.UpdateCategoryRequest;
-import week4.lab2a.tuswadlab42a.dto.UpdateLocationRequest;
-import week4.lab2a.tuswadlab42a.dto.UpdateRestaurantRequest;
+import week4.lab2a.tuswadlab42a.dto.CategoryDTO;
+import week4.lab2a.tuswadlab42a.dto.FullRestaurantDTO;
+import week4.lab2a.tuswadlab42a.dto.LocationDTO;
+import week4.lab2a.tuswadlab42a.dto.RestaurantDTO;
 import week4.lab2a.tuswadlab42a.service.CategoryService;
 import week4.lab2a.tuswadlab42a.service.LocationService;
 import week4.lab2a.tuswadlab42a.service.RestaurantService;
@@ -38,7 +39,7 @@ public class AdminController {
     }
 
     @GetMapping("restaurants/{id}")
-    public Restaurant getRestaurantById(@PathVariable Long id) {
+    public FullRestaurantDTO getRestaurantById(@PathVariable Long id) {
         return restaurantService.findById(id);
     }
 
@@ -51,7 +52,7 @@ public class AdminController {
     @PutMapping("restaurants/{id}")
     public Restaurant updateRestaurant(
             @PathVariable long id,
-            @RequestBody UpdateRestaurantRequest restaurant
+            @RequestBody RestaurantDTO restaurant
     ) {
         return  restaurantService.updateRestaurant(id, restaurant);
     }
@@ -78,14 +79,14 @@ public class AdminController {
     }
 
     @PostMapping("locations")
-    public Location createLocation(@RequestBody Location location) {
+    public Location createLocation(@RequestBody LocationDTO location) {
         return locationService.createLocation(location);
     }
 
     @PutMapping("locations/{id}")
     public Location updateLocation(
             @PathVariable long id,
-            @RequestBody UpdateLocationRequest location
+            @RequestBody LocationDTO location
     ) {
         return  locationService.updateLocation(id, location);
     }
@@ -112,12 +113,12 @@ public class AdminController {
     }
 
     @PostMapping("categories")
-    public Category createCategory(@RequestBody Category location) {
-        return categoryService.createCategory(location);
+    public Category createCategory(@RequestBody CategoryDTO category) {
+        return categoryService.createCategory(category);
     }
 
     @PutMapping("categories/{id}")
-    public Category updateLocation(@PathVariable long id, @RequestBody UpdateCategoryRequest category) {
+    public Category updateLocation(@PathVariable long id, @RequestBody CategoryDTO category) {
         return  categoryService.updateCategory(id, category);
     }
 

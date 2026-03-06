@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import week4.lab2a.tuswadlab42a.dto.LocationDTO;
 
 @Entity
 @Table(name="location")
@@ -22,4 +23,5 @@ public class Location {
     @JoinColumn(name = "restaurant_id")
     @JsonBackReference
     private Restaurant restaurant;
+
 }

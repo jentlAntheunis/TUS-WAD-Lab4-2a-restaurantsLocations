@@ -2,8 +2,9 @@ package week4.lab2a.tuswadlab42a.service;
 
 import org.springframework.stereotype.Service;
 import week4.lab2a.tuswadlab42a.domain.Category;
+import week4.lab2a.tuswadlab42a.domain.Location;
 import week4.lab2a.tuswadlab42a.domain.Restaurant;
-import week4.lab2a.tuswadlab42a.dto.UpdateCategoryRequest;
+import week4.lab2a.tuswadlab42a.dto.CategoryDTO;
 import week4.lab2a.tuswadlab42a.repository.CategoryRepository;
 import week4.lab2a.tuswadlab42a.repository.RestaurantRepository;
 
@@ -31,12 +32,16 @@ public class CategoryService {
         return categoryRepository.getReferenceById(categoryId);
     }
 
-    public Category createCategory(Category category) {
-
-        return categoryRepository.save(category);
+    public Category createCategory(CategoryDTO req) {
+        Category newCategory = new Category();
+        if(req.getName() != null) newCategory.setName(req.getName());
+        if(req.getRestaurantId() != null && restaurantRepository.findById(req.getRestaurantId()).isPresent()) {
+            newCategory.setRestaurant(restaurantRepository.findById(req.getRestaurantId()).get());
+        }
+        return categoryRepository.save(newCategory);
     }
 
-    public Category updateCategory(Long categoryId, UpdateCategoryRequest req) {
+    public Category updateCategory(Long categoryId, CategoryDTO req) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found")); // ensure category exists
         Restaurant restaurant = restaurantRepository.findById(req.getRestaurantId())
